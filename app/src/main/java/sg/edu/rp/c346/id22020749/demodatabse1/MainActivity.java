@@ -6,7 +6,9 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btnInsert, btnGetTasks;
     TextView tvResults;
+    ListView lv;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -25,12 +28,18 @@ public class MainActivity extends AppCompatActivity {
         btnInsert = findViewById(R.id.btnInsert);
         btnGetTasks = findViewById(R.id.btnGetTasks);
         tvResults = findViewById(R.id.tvResults);
+        lv = findViewById(R.id.lv);
+
         btnInsert.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 // Create the DBHelper object, passing in the
                 // activity's Context
                 DBHelper db = new DBHelper(MainActivity.this);
+
+                ArrayList myList = db.getTasks();
+                ArrayAdapter lvAdapter= new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, myList);
+                lv.setAdapter(lvAdapter);
 
                 // Insert a task
                 db.insertTask("Submit RJ", "25 Apr 2021");
@@ -56,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 tvResults.setText(txt);
             }
         });
+
 
         }
 }
